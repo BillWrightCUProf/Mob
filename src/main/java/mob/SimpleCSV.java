@@ -12,10 +12,12 @@ public class SimpleCSV {
         try (BufferedReader reader = Files.newBufferedReader(Paths.get(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                String[] values = line.split(",");
+                String strippedLine = line.strip().replaceAll("\"", "");
+                String[] values = strippedLine.split(",");
                 data.add(values);
             }
         }
+        assert !data.isEmpty();
     }
 
     @Override
@@ -30,6 +32,10 @@ public class SimpleCSV {
     public String selectOne() {
         Random random = new Random();
         int index = random.nextInt(data.size());
+        return getStudentName(index);
+    }
+
+    String getStudentName(int index) {
         String[] student = data.get(index);
         return student[1] + " " + student[0];
     }
